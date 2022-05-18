@@ -18,7 +18,6 @@ func CommonPostJson(url string, headers map[string]string, body map[string]inter
 	req, err := http.NewRequest(http.MethodPost, url, payload)
 	if err != nil {
 		return nil, err
-
 	}
 
 	req.Header.Add("Content-Type", "application/json")

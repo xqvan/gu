@@ -35,14 +35,19 @@ func CommonPostJson(url string, headers map[string]string, body map[string]inter
 
 	return resBody, err
 }
-func CommonGet(url string) ([]byte, error) {
-	res, err := http.Get(url)
-	if err != nil {
-		return nil, err
+func CommonGet(url string) (resBody []byte, err error) {
+	var res *http.Response
+	for i := 0; i < 3; i++ {
+		res, err = http.Get(url)
+		if err != nil {
+			continue
+		}
+		defer res.Body.Close()
+		resBody, err = io.ReadAll(res.Body)
+		if err != nil {
+			continue
+		}
+		return
 	}
-	defer res.Body.Close()
-
-	resBody, err := io.ReadAll(res.Body)
-
-	return resBody, err
+	return
 }
